@@ -1,7 +1,8 @@
 import 'package:hive/hive.dart';
-
+//! the name of this file that will be generated should be the same as the name of the model file
 part 'note_model.g.dart';
 
+//* typeId should be unique from one model to another
 @HiveType(typeId: 0)
 class NoteModel {
   @HiveField(0)
