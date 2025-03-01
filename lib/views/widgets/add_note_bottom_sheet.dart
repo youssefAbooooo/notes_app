@@ -3,8 +3,17 @@ import 'package:notes_app/views/widgets/custom_button.dart';
 
 import 'custom_text_field.dart';
 
-class AddNoteBottomSheet extends StatelessWidget {
+class AddNoteBottomSheet extends StatefulWidget {
   const AddNoteBottomSheet({super.key});
+
+  @override
+  State<AddNoteBottomSheet> createState() => _AddNoteBottomSheetState();
+}
+
+class _AddNoteBottomSheetState extends State<AddNoteBottomSheet> {
+  String? title, subTitle;
+  final GlobalKey<FormState> formGlobalkey = GlobalKey();
+  AutovalidateMode autovalidateMode = AutovalidateMode.disabled;
 
   @override
   Widget build(BuildContext context) {
@@ -14,14 +23,45 @@ class AddNoteBottomSheet extends StatelessWidget {
         vertical: 32.0,
       ),
       child: SingleChildScrollView(
-        child: Column(
-          spacing: 16,
-          children: [
-            CustomTextField(hintText: 'Title'),
-            CustomTextField(hintText: 'Content', maxLines: 5),
-            SizedBox(height: 16),
-            CustomButton(),
-          ],
+        child: Form(
+          key: formGlobalkey,
+          autovalidateMode: autovalidateMode,
+          child: Column(
+            spacing: 16,
+            children: [
+              CustomTextField(
+                hintText: 'Title',
+                maxlength: 25,
+                onSaved: (value) {
+                  title = value;
+                },
+              ),
+              CustomTextField(
+                hintText: 'Content',
+                maxLines: 5,
+                maxlength: 150,
+                onSaved: (value) {
+                  subTitle = value;
+                },
+              ),
+              SizedBox(height: 16),
+              CustomButton(
+                onTap: () {
+                  if (formGlobalkey.currentState!.validate()) {
+                  } else {
+                    //* Validation runs immediately and continuously, showing errors as soon as the UI loads.
+                    autovalidateMode = AutovalidateMode.always;
+                    setState(() {});
+                  }
+
+                  ///!validate()
+                  ///* It checks all the form fields inside the Form widget and runs their validator functions.
+                  ///* If all validators return null (i.e., no errors), the form is considered valid, and validate() returns true.
+                  ///* If any validator returns a validation error message, the form is invalid, and validate() returns false.
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
