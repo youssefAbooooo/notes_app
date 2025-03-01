@@ -12,7 +12,10 @@ class AddNoteBottomSheet extends StatefulWidget {
 
 class _AddNoteBottomSheetState extends State<AddNoteBottomSheet> {
   String? title, subTitle;
-  final GlobalKey<FormState> formGlobalkey = GlobalKey();
+  final GlobalKey<FormState> _formGlobalkey = GlobalKey();
+
+  ///!AutovalidateMode.disabled(Default)
+  ///*Validation only happens when calling validate(), such as when a form is submitted.
   AutovalidateMode autovalidateMode = AutovalidateMode.disabled;
 
   @override
@@ -24,7 +27,7 @@ class _AddNoteBottomSheetState extends State<AddNoteBottomSheet> {
       ),
       child: SingleChildScrollView(
         child: Form(
-          key: formGlobalkey,
+          key: _formGlobalkey,
           autovalidateMode: autovalidateMode,
           child: Column(
             spacing: 16,
@@ -47,9 +50,11 @@ class _AddNoteBottomSheetState extends State<AddNoteBottomSheet> {
               SizedBox(height: 16),
               CustomButton(
                 onTap: () {
-                  if (formGlobalkey.currentState!.validate()) {
+                  if (_formGlobalkey.currentState!.validate()) {
+                    _formGlobalkey.currentState!.save();
                   } else {
-                    //* Validation runs immediately and continuously, showing errors as soon as the UI loads.
+                    ///!AutovalidateMode.always
+                    ///* Validation runs immediately and continuously, showing errors as soon as the UI loads.
                     autovalidateMode = AutovalidateMode.always;
                     setState(() {});
                   }
@@ -58,6 +63,10 @@ class _AddNoteBottomSheetState extends State<AddNoteBottomSheet> {
                   ///* It checks all the form fields inside the Form widget and runs their validator functions.
                   ///* If all validators return null (i.e., no errors), the form is considered valid, and validate() returns true.
                   ///* If any validator returns a validation error message, the form is invalid, and validate() returns false.
+
+                  ///!save()
+                  ///*Calls the onSaved callback of every TextFormField inside the Form.
+                  ///*Used to store user input into variables when form submission happens.
                 },
               ),
             ],
