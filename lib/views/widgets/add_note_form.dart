@@ -26,6 +26,7 @@ class _AddNoteFormState extends State<AddNoteForm> {
       key: _formGlobalkey,
       autovalidateMode: autovalidateMode,
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         spacing: 16,
         children: [
           CustomTextField(
@@ -43,32 +44,36 @@ class _AddNoteFormState extends State<AddNoteForm> {
               subTitle = value;
             },
           ),
-          SizedBox(height: 16),
-          CustomButton(
-            onTap: () {
-              if (_formGlobalkey.currentState!.validate()) {
-                _formGlobalkey.currentState!.save();
-                NoteModel noteModel = NoteModel(
-                    color: Colors.blue.value,
-                    date: DateTime.now().toString(),
-                    subTitle: subTitle!,
-                    title: title!);
-                BlocProvider.of<AddNoteCubit>(context).addNote(noteModel);
-              } else {
-                ///!AutovalidateMode.always
-                ///* Validation runs immediately and continuously, showing errors as soon as the UI loads.
-                autovalidateMode = AutovalidateMode.always;
-                setState(() {});
-              }
+          BlocBuilder<AddNoteCubit, AddNoteState>(
+            builder: (context, state) {
+              return CustomButton(
+                isLoading: state is AddNoteLoadingState ? true : false,
+                onTap: () {
+                  if (_formGlobalkey.currentState!.validate()) {
+                    _formGlobalkey.currentState!.save();
+                    NoteModel noteModel = NoteModel(
+                        color: Colors.blue.value,
+                        date: DateTime.now().toString(),
+                        subTitle: subTitle!,
+                        title: title!);
+                    BlocProvider.of<AddNoteCubit>(context).addNote(noteModel);
+                  } else {
+                    ///!AutovalidateMode.always
+                    ///* Validation runs immediately and continuously, showing errors as soon as the UI loads.
+                    autovalidateMode = AutovalidateMode.always;
+                    setState(() {});
+                  }
 
-              ///!validate()
-              ///* It checks all the form fields inside the Form widget and runs their validator functions.
-              ///* If all validators return null (i.e., no errors), the form is considered valid, and validate() returns true.
-              ///* If any validator returns a validation error message, the form is invalid, and validate() returns false.
+                  ///!validate()
+                  ///* It checks all the form fields inside the Form widget and runs their validator functions.
+                  ///* If all validators return null (i.e., no errors), the form is considered valid, and validate() returns true.
+                  ///* If any validator returns a validation error message, the form is invalid, and validate() returns false.
 
-              ///!save()
-              ///*Calls the onSaved callback of every TextFormField inside the Form.
-              ///*Used to store user input into variables when form submission happens.
+                  ///!save()
+                  ///*Calls the onSaved callback of every TextFormField inside the Form.
+                  ///*Used to store user input into variables when form submission happens.
+                },
+              );
             },
           ),
         ],
