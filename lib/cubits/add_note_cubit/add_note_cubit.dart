@@ -23,7 +23,26 @@ class AddNoteCubit extends Cubit<AddNoteState> {
     }
   }
 
+  //! generic function
+
   Y add<Y>(Y name) {
     return name;
   }
+
+  ///*This function in Dart is a generic function, meaning it can work with any data type. Let's break it down:
+  ///
+  ///* add<Y> → This declares a generic function where Y is a type parameter.
+  ///* (Y name) → The function takes one parameter, name, of type Y.
+  ///* return name; → It simply returns the input value of type Y.
+  ///
+  ///* How It Works:
+  ///* Since Y is a generic type, the function can accept and return any data type (int, String, double, List, etc.).
+  ///* The actual type of Y is determined when the function is called.
+  ///
+  ///* Examples of Usage:
+  ///* void main() {
+  ///*   print(add<int>(10));         // Output: 10
+  ///*   print(add<String>("Hello")); // Output: Hello
+  ///*   print(add<double>(5.5));     // Output: 5.5
+  ///* }
 }
