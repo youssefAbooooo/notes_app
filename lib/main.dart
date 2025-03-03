@@ -15,7 +15,9 @@ void main() async {
   //* Register the adapter before opening the box, so that the box recognizes the adapter and can store objects of that type.
   Hive.registerAdapter(NoteModelAdapter());
   //* open a hive box (its like a database table or firebase collection)
-  await Hive.openBox(kNotesBox);
+  if (!Hive.isBoxOpen(kNotesBox)) {
+    await Hive.openBox<NoteModel>(kNotesBox);
+  }
   runApp(const NotesApp());
 }
 
@@ -24,17 +26,12 @@ class NotesApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (context) => AddNoteCubit()),
-      ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: const NotesView(),
-        theme: ThemeData(
-          brightness: Brightness.dark,
-          fontFamily: 'Poppins',
-        ),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: const NotesView(),
+      theme: ThemeData(
+        brightness: Brightness.dark,
+        fontFamily: 'Poppins',
       ),
     );
   }
