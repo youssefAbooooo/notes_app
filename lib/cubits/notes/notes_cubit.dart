@@ -7,12 +7,16 @@ import 'package:notes_app/models/note_model.dart';
 part 'notes_state.dart';
 
 class NotesCubit extends Cubit<NotesState> {
-  NotesCubit() : super(NotesInitial());
+  NotesCubit() : super(NotesInitialState());
 
   List<NoteModel>? notesList;
 
   getNotes() {
     notesList = Hive.box<NoteModel>(kNotesBox).values.toList();
-    emit(NotesSuccess());
+    if (notesList == null || notesList!.isEmpty) {
+      emit(NotesEmptyState());
+    } else {
+      emit(NotesSuccessState());
+    }
   }
 }
