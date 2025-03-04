@@ -28,9 +28,13 @@ class AddNoteBottomSheet extends StatelessWidget {
                 ? true //* if state is addNoteLoadingState, then don't allow pressing on the screen.
                 : false, //* else, allow pressing on the screen.
             child: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16.0,
-                vertical: 32.0,
+              padding: EdgeInsets.only(
+                left: 16.0,
+                right: 16.0,
+                top: 32.0,
+                bottom: MediaQuery.of(context)
+                    .viewInsets
+                    .bottom, //!this line will make padding when the keyboard is shown = the height of the keyboard
               ),
               child: AddNoteForm(),
             ),

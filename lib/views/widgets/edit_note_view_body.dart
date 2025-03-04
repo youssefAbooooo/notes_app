@@ -9,15 +9,17 @@ class EditNoteViewBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: Column(
-        spacing: 16,
-        children: [
-          SizedBox(height: 34),
-          CustomAppBar(title: 'Edit Note', icon: Icons.check),
-          SizedBox(height: 34),
-          CustomTextField(hintText: 'title'),
-          CustomTextField(hintText: 'Content', maxLines: 5),
-        ],
+      child: SingleChildScrollView(
+        child: Column(
+          spacing: 16,
+          children: [
+            SizedBox(height: 34),
+            CustomAppBar(title: 'Edit Note', icon: Icons.check),
+            SizedBox(height: 34),
+            CustomTextField(hintText: 'title'),
+            CustomTextField(hintText: 'Content', maxLines: 15),
+          ],
+        ),
       ),
     );
   }
