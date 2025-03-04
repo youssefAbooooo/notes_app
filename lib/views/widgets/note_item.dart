@@ -10,21 +10,6 @@ class NoteItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    DateTime dateTime = DateTime.parse(note.date);
-    List<String> shortMonthNames = [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec"
-    ];
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -77,7 +62,7 @@ class NoteItem extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(right: 24.0),
               child: Text(
-                '${shortMonthNames[dateTime.month - 1]} ${dateTime.day},${dateTime.year}',
+                note.date,
                 style:
                     TextStyle(color: Colors.black.withAlpha(128), fontSize: 16),
               ),

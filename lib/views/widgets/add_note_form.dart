@@ -20,6 +20,20 @@ class _AddNoteFormState extends State<AddNoteForm> {
   ///!AutovalidateMode.disabled(Default)
   ///*Validation only happens when calling validate(), such as when a form is submitted.
   AutovalidateMode autovalidateMode = AutovalidateMode.disabled;
+  final List<String> shortMonthNames = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec"
+  ];
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -50,10 +64,15 @@ class _AddNoteFormState extends State<AddNoteForm> {
                 isLoading: state is AddNoteLoadingState ? true : false,
                 onTap: () {
                   if (_formGlobalkey.currentState!.validate()) {
+                    String dateTimeString = DateTime.now().toString();
+                    DateTime dateTime = DateTime.parse(dateTimeString);
+
+                    String formatedDate =
+                        '${shortMonthNames[dateTime.month - 1]} ${dateTime.day},${dateTime.year}';
                     _formGlobalkey.currentState!.save();
                     NoteModel noteModel = NoteModel(
                         color: Colors.blue.value,
-                        date: DateTime.now().toString(),
+                        date: formatedDate,
                         subTitle: subTitle!,
                         title: title!);
                     BlocProvider.of<AddNoteCubit>(context).addNote(noteModel);
