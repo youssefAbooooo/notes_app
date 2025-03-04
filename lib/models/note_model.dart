@@ -4,7 +4,7 @@ part 'note_model.g.dart';
 
 //* typeId should be unique from one model to another
 @HiveType(typeId: 0)
-class NoteModel {
+class NoteModel extends HiveObject {
   @HiveField(0)
   final String title;
   @HiveField(1)
