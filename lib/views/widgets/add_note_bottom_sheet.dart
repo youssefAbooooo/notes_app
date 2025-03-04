@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:notes_app/cubits/add_note_cubit/add_note_cubit.dart';
+import 'package:notes_app/cubits/notes/notes_cubit.dart';
 
 import 'add_note_form.dart';
 
@@ -16,6 +17,7 @@ class AddNoteBottomSheet extends StatelessWidget {
       child: BlocConsumer<AddNoteCubit, AddNoteState>(
         listener: (context, state) {
           if (state is AddNoteSuccessState) {
+            BlocProvider.of<NotesCubit>(context).getNotes();
             Navigator.pop(context);
           }
           if (state is AddNoteFailureState) {
@@ -32,9 +34,11 @@ class AddNoteBottomSheet extends StatelessWidget {
                 left: 16.0,
                 right: 16.0,
                 top: 32.0,
-                bottom: MediaQuery.of(context)
-                    .viewInsets
-                    .bottom, //!this line will make padding when the keyboard is shown = the height of the keyboard
+                bottom: MediaQuery.of(context).viewInsets.bottom == 0
+                    ? 16
+                    : MediaQuery.of(context)
+                        .viewInsets
+                        .bottom, //!this line will make padding when the keyboard is shown = the height of the keyboard
               ),
               child: AddNoteForm(),
             ),
