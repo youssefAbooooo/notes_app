@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:notes_app/cubits/add_note_cubit/add_note_cubit.dart';
 import 'package:notes_app/models/note_model.dart';
 
+import 'colors_list_view.dart';
 import 'custom_button.dart';
 import 'custom_text_field.dart';
 
@@ -58,24 +59,16 @@ class _AddNoteFormState extends State<AddNoteForm> {
               subTitle = value;
             },
           ),
+          ColorsListView(),
           BlocBuilder<AddNoteCubit, AddNoteState>(
             builder: (context, state) {
               return CustomButton(
                 isLoading: state is AddNoteLoadingState ? true : false,
                 onTap: () {
                   if (_formGlobalkey.currentState!.validate()) {
-                    String dateTimeString = DateTime.now().toString();
-                    DateTime dateTime = DateTime.parse(dateTimeString);
-
-                    String formatedDate =
-                        '${shortMonthNames[dateTime.month - 1]} ${dateTime.day},${dateTime.year}';
+                    String formatedDate = formatingTheDate();
                     _formGlobalkey.currentState!.save();
-                    NoteModel noteModel = NoteModel(
-                        color: Colors.blue.value,
-                        date: formatedDate,
-                        subTitle: subTitle!,
-                        title: title!);
-                    BlocProvider.of<AddNoteCubit>(context).addNote(noteModel);
+                    addNoteToList(formatedDate, context);
                   } else {
                     ///!AutovalidateMode.always
                     ///* Validation runs immediately and continuously, showing errors as soon as the UI loads.
@@ -98,5 +91,23 @@ class _AddNoteFormState extends State<AddNoteForm> {
         ],
       ),
     );
+  }
+
+  void addNoteToList(String formatedDate, BuildContext context) {
+    NoteModel noteModel = NoteModel(
+        color: Colors.blue.value,
+        date: formatedDate,
+        subTitle: subTitle!,
+        title: title!);
+    BlocProvider.of<AddNoteCubit>(context).addNote(noteModel);
+  }
+
+  String formatingTheDate() {
+    String dateTimeString = DateTime.now().toString();
+    DateTime dateTime = DateTime.parse(dateTimeString);
+
+    String formatedDate =
+        '${shortMonthNames[dateTime.month - 1]} ${dateTime.day},${dateTime.year}';
+    return formatedDate;
   }
 }
